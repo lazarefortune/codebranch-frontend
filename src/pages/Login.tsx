@@ -1,59 +1,77 @@
-import { Link , useNavigate } from "react-router-dom";
-import {useState} from "react";
-import * as React from "react";
-import {login} from "../api/auth.ts";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { login } from "@/api/auth";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 const Login = () => {
-    const navigate = useNavigate()
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError('')
+        setError("");
 
         try {
             const data = await login(email, password);
-
-            localStorage.setItem('token', data.access_token)
-
-            navigate('/dashboard')
-        } catch (error: any) {
-            console.log(error)
-            setError("Email ou mot de passe incorrect")
+            localStorage.setItem("token", data.access_token);
+            navigate("/dashboard");
+        } catch (err: unknown) {
+            const message =
+                err instanceof Error ? err.message : "Une erreur est survenue";
+            console.error(message);
+            setError("Email ou mot de passe incorrect");
         }
-    }
+    };
 
     return (
-        <>
-            <div className="max-w-md mx-auto bg-white p-8 rounded shadow">
-                <h1 className="title">Connexion</h1>
+        <div className="max-w-md mx-auto bg-white p-8 rounded shadow space-y-6">
+            <h1 className="text-2xl font-bold text-center">Connexion</h1>
 
-                <form onSubmit={handleSubmit}>
-                    {error && <div className="bg-red-50 rounded p-3 text-center my-2">
-                        <p className="form-error">{error}</p>
-                    </div>}
-
-                    <div className="form-group">
-                        <label htmlFor="email" className="form-label">Email</label>
-                        <input id="email" type="email" className="form-input" onChange={(e) => setEmail(e.target.value)} />
+            <form onSubmit={handleSubmit} className="space-y-4">
+                {error && (
+                    <div className="bg-red-50 border border-red-200 rounded p-3 text-red-700 text-sm text-center">
+                        {error}
                     </div>
+                )}
 
-                    <div className="form-group">
-                        <label htmlFor="password" className="form-label">Mot de passe</label>
-                        <input id="password" type="password" className="form-input" onChange={(e) => setPassword(e.target.value)} />
-                    </div>
+                <div className="space-y-1">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        placeholder="votre@email.dev"
+                        value={email}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                    />
+                </div>
 
-                    <button type="submit" className="btn btn-primary w-full">Se connecter</button>
-                </form>
+                <div className="space-y-1">
+                    <Label htmlFor="password">Mot de passe</Label>
+                    <Input
+                        id="password"
+                        type="password"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                    />
+                </div>
 
-                <p className="text-sm text-center mt-4">
-                    Pas encore de compte ?{" "}
-                    <Link to="/inscription" className="text-blue-600 hover:underline">Créer un compte</Link>
-                </p>
-            </div>
-        </>
+                <Button type="submit" className="w-full">
+                    Se connecter
+                </Button>
+            </form>
+
+            <p className="text-sm text-center">
+                Pas encore de compte ?{" "}
+                <Link to="/inscription" className="text-blue-600 hover:underline">
+                    Créer un compte
+                </Link>
+            </p>
+        </div>
     );
 };
 
