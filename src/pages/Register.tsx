@@ -1,32 +1,70 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 const Register = () => {
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log("Registering with:", { username, email, password });
+    };
+
     return (
-        <div className="max-w-md mx-auto bg-white p-8 rounded shadow">
-            <h1 className="title">Inscription</h1>
+        <div className="max-w-md mx-auto bg-white p-8 rounded shadow space-y-6">
+            <h1 className="text-2xl font-bold text-center">Inscription</h1>
 
-            <form>
-                <div className="form-group">
-                    <label htmlFor="username" className="form-label">Nom d'utilisateur</label>
-                    <input id="username" type="text" className="form-input" />
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-1">
+                    <Label htmlFor="username">Nom</Label>
+                    <Input
+                        id="username"
+                        type="text"
+                        placeholder="ex : Jonh Doe"
+                        required={true}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
                 </div>
 
-                <div className="form-group">
-                    <label htmlFor="email" className="form-label">Email</label>
-                    <input id="email" type="email" className="form-input" />
+                <div className="space-y-1">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        placeholder="jonh@gmail.com"
+                        required={true}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
                 </div>
 
-                <div className="form-group">
-                    <label htmlFor="password" className="form-label">Mot de passe</label>
-                    <input id="password" type="password" className="form-input" />
+                <div className="space-y-1">
+                    <Label htmlFor="password">Mot de passe</Label>
+                    <Input
+                        id="password"
+                        type="password"
+                        placeholder="••••••••"
+                        required={true}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                 </div>
 
-                <button type="submit" className="btn btn-primary w-full">S’inscrire</button>
+                <Button type="submit" className="w-full">
+                    S’inscrire
+                </Button>
             </form>
 
-            <p className="text-sm text-center mt-4">
+            <p className="text-sm text-center">
                 Déjà un compte ?{" "}
-                <Link to="/connexion" className="text-blue-600 hover:underline">Se connecter</Link>
+                <Link to="/connexion" className="text-blue-600 hover:underline">
+                    Se connecter
+                </Link>
             </p>
         </div>
     );
