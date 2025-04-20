@@ -14,7 +14,11 @@ export default {
   		inter: [
   			'Inter Var',
   			'sans-serif'
-  		]
+  		],
+		grotesk: [
+			'Space Grotesk',
+			'sans-serif'
+		]
   	},
   	extend: {
   		borderRadius: {

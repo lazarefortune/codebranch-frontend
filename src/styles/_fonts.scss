@@ -4,8 +4,12 @@
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
+  font-feature-settings: "cv03", "cv04", "cv05", "cv10","cv11", "ss01", "ss03", "ss04";
 }
-
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../assets/fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf');
+}
 @font-face {
   font-family: 'Sora';
   src: url('../assets/fonts/Sora/Sora-VariableFont_wght.ttf');
