@@ -20,6 +20,12 @@ export const login = async (email:string, password: string) => {
         } else {
             console.error("Unexpected error during login:", error);
         }
-        throw new Error("Failed to log in. Please check your credentials and try again.");
+        if (axios.isAxiosError(error)) {
+            const status = error.response?.status;
+            const errorMessage = error.response?.data?.message || "An error occurred during login.";
+            throw new Error(`Failed to log in. Status: ${status}. Message: ${errorMessage}`);
+        } else {
+            throw new Error("Failed to log in. Please check your credentials and try again.");
+        }
     }
 }
