@@ -1,17 +1,32 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "@/api/auth"; // 👈 import API
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 const Register = () => {
+    const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Registering with:", { username, email, password });
+        setError("");
+
+        try {
+            const data = await register(username, email, password);
+
+            localStorage.setItem("token", data.access_token);
+
+            navigate("/dashboard");
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : "Une erreur est survenue";
+            console.error(message);
+            setError("Erreur lors de l'inscription. Vérifie tes informations.");
+        }
     };
 
     return (
@@ -29,15 +44,10 @@ const Register = () => {
             {/* Droite */}
             <div className="flex items-center justify-center p-6 lg:p-16 bg-white">
                 <div className="w-full max-w-md space-y-6">
-                    {/* Logo */}
-                    <Link
-                        to="/"
-                        className="text-center block text-2xl font-bold tracking-tight text-blue-900"
-                    >
+                    <Link to="/" className="text-center block text-2xl font-bold tracking-tight text-blue-900">
                         CODEBRANCH
                     </Link>
 
-                    {/* Accroche */}
                     <div className="text-center space-y-1">
                         <h1 className="text-xl font-semibold">Crée ton compte</h1>
                         <p className="text-gray-600 text-sm">
@@ -45,8 +55,13 @@ const Register = () => {
                         </p>
                     </div>
 
-                    {/* Formulaire */}
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        {error && (
+                            <div className="bg-red-50 border border-red-200 rounded p-3 text-red-700 text-sm text-center">
+                                {error}
+                            </div>
+                        )}
+
                         <div className="space-y-1">
                             <Label htmlFor="username">Nom</Label>
                             <Input
@@ -88,7 +103,6 @@ const Register = () => {
                         </Button>
                     </form>
 
-                    {/* Footer */}
                     <p className="text-sm text-center text-gray-600">
                         Déjà un compte ?{" "}
                         <Link to="/connexion" className="text-blue-600 hover:underline font-medium">

@@ -6,13 +6,16 @@ import Login from "../pages/Login.tsx";
 import Register from "../pages/Register.tsx";
 import PrivateRoute from "@/components/auth/PrivateRoute";
 import Dashboard from "@/pages/Dashboard";
+import GuestRoute from "@/components/auth/GuestRoute";
 
 const AppRouter = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/connexion" element={<Login />} />
-                <Route path="/inscription" element={<Register />} />
+                <Route element={<GuestRoute />}>
+                    <Route path="/connexion" element={<Login />} />
+                    <Route path="/inscription" element={<Register />} />
+                </Route>
 
                 <Route element={<Layout />}>
                     {/* Public */}

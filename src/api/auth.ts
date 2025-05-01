@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
 export const login = async (email:string, password: string) => {
     try {
@@ -29,3 +29,23 @@ export const login = async (email:string, password: string) => {
         }
     }
 }
+
+export const register = async (username: string, email: string, password: string) => {
+    const response = await axios.post(`${API_URL}/users`, {
+        username,
+        email,
+        password,
+    });
+    return response.data;
+};
+
+export const getMe = async () => {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${API_URL}/auth/me`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+};
+
