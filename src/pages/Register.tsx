@@ -4,6 +4,7 @@ import { register } from "@/api/auth"; // 👈 import API
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import {Logo} from "@/components/Logo";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -44,12 +45,13 @@ const Register = () => {
             {/* Droite */}
             <div className="flex items-center justify-center p-6 lg:p-16 bg-white">
                 <div className="w-full max-w-md space-y-6">
-                    <Link to="/" className="text-center block text-2xl font-bold tracking-tight text-blue-900">
-                        CODEBRANCH
-                    </Link>
+                    <div className="w-full flex justify-center items-center">
+                        <Link to="/" className="flex items-center space-x-2">
+                            <Logo />
+                        </Link>
+                    </div>
 
                     <div className="text-center space-y-1">
-                        <h1 className="text-xl font-semibold">Crée ton compte</h1>
                         <p className="text-gray-600 text-sm">
                             Centralise tous tes liens dev en un seul endroit.
                         </p>
