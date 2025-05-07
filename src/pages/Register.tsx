@@ -1,32 +1,38 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { register } from "@/api/auth"; // 👈 import API
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import {Link, useNavigate} from "react-router-dom";
+import {register as apiRegister} from "@/api/auth";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Button} from "@/components/ui/button";
 import {Logo} from "@/components/Logo";
+import {useForm} from "react-hook-form";
+import {registerSchema, RegisterValues} from "@/validation/registerSchema";
+import {zodResolver} from "@hookform/resolvers/zod";
 
 const Register = () => {
     const navigate = useNavigate();
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    const {
+        register,
+        handleSubmit,
+        formState: {errors, isSubmitting},
+        setError,
+    } = useForm<RegisterValues>({
+        resolver: zodResolver(registerSchema)
+    });
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError("");
-
+    const onSubmit = async (data: RegisterValues) => {
         try {
-            const data = await register(username, email, password);
+            const response = await apiRegister(data.username, data.email, data.password);
 
-            localStorage.setItem("token", data.access_token);
+            localStorage.setItem("token", response.access_token);
 
             navigate("/dashboard");
         } catch (err: unknown) {
             const message = err instanceof Error ? err.message : "Une erreur est survenue";
             console.error(message);
-            setError("Erreur lors de l'inscription. Vérifie tes informations.");
+            setError("email", {
+                type: "manual",
+                message: "Email déjà utilisé ou invalide.",
+            });
         }
     };
 
@@ -34,10 +40,10 @@ const Register = () => {
         <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
             {/* Gauche */}
             <div className="bg-gray-900 text-white hidden lg:flex flex-col justify-between p-10">
-                <div />
+                <div/>
                 <blockquote className="text-2xl font-light leading-relaxed">
                     “Un développeur qui ne pratique pas est comme un sabre qui rouille.”
-                    <br />
+                    <br/>
                     <span className="text-sm text-gray-400 mt-2 block">— CodeBranch</span>
                 </blockquote>
             </div>
@@ -47,7 +53,7 @@ const Register = () => {
                 <div className="w-full max-w-md space-y-6">
                     <div className="w-full flex justify-center items-center">
                         <Link to="/" className="flex items-center space-x-2">
-                            <Logo />
+                            <Logo/>
                         </Link>
                     </div>
 
@@ -57,23 +63,18 @@ const Register = () => {
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        {error && (
-                            <div className="bg-red-50 border border-red-200 rounded p-3 text-red-700 text-sm text-center">
-                                {error}
-                            </div>
-                        )}
-
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         <div className="space-y-1">
                             <Label htmlFor="username">Nom</Label>
                             <Input
                                 id="username"
                                 type="text"
-                                placeholder="ex : Jonh Doe"
                                 required
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                {...register("username")}
                             />
+                            {errors.username && (
+                                <p className="form-error">{errors.username.message}</p>
+                            )}
                         </div>
 
                         <div className="space-y-1">
@@ -81,11 +82,11 @@ const Register = () => {
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="jonh@gmail.com"
-                                required
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                {...register("email")}
                             />
+                            {errors.email && (
+                                <p className="form-error">{errors.email.message}</p>
+                            )}
                         </div>
 
                         <div className="space-y-1">
@@ -93,15 +94,15 @@ const Register = () => {
                             <Input
                                 id="password"
                                 type="password"
-                                placeholder="••••••••"
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                {...register("password")}
                             />
+                            {errors.password && (
+                                <p className="form-error">{errors.password.message}</p>
+                            )}
                         </div>
 
                         <Button type="submit" className="w-full mt-2">
-                            S’inscrire
+                            {isSubmitting ? "Inscription en cours" : "S’inscrire"}
                         </Button>
                     </form>
 
