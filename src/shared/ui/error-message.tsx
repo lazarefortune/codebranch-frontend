@@ -17,7 +17,7 @@ const ErrorMessage = React.forwardRef<HTMLDivElement, ErrorMessageProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-center gap-2 text-sm text-destructive",
+          "flex items-center gap-2 text-base text-destructive",
           className
         )}
         {...props}

@@ -41,9 +41,13 @@
   /* Border Radius */
   --radius: 0.5rem;
 
-  /* Fonts */
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
+  /* Fonts - Geist pour texte, Rethink Sans pour titres */
+  --font-family-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-family-heading: var(--font-rethink-sans), system-ui, sans-serif;
+  --font-family-mono: "Courier New", monospace;
+  
+  /* Base font size - 16px */
+  --font-size-base: 16px;
 }
 
 /* Override theme variables for dark mode */
@@ -88,9 +92,26 @@
   * {
     border-color: var(--color-border);
   }
+  
+  html {
+    font-size: 16px;
+    font-family: var(--font-geist-sans), system-ui, sans-serif;
+  }
+  
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-sans);
+    font-family: inherit;
+    font-size: 16px;
+  }
+  
+  /* Geist pour les textes */
+  p, span, div, a, button, input, textarea, select, label, li, td, th, small, strong, em, code, pre {
+    font-family: var(--font-geist-sans), system-ui, sans-serif;
+  }
+  
+  /* Rethink Sans pour les titres */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-rethink-sans), system-ui, sans-serif;
   }
 }
