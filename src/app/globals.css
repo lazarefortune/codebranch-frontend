@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/* Define how dark mode should be handled (toggle via class) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Define your light (default) theme variables */
+@theme {
+  /* Primary brand color - #4255FF */
+  /* ou ça : #252b66 */
+  --color-primary: #4255FF;
+  --color-primary-foreground: #ffffff;
+  --color-ring: #4255FF;
+
+  /* Background & Surface - Light mode */
+  --color-background: #fafafa;
+  --color-foreground: #0f172a;
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0f172a;
+
+  /* Secondary - Gris clair */
+  --color-secondary: #f1f5f9;
+  --color-secondary-foreground: #1e293b;
+
+  /* Muted - Gris neutre */
+  --color-muted: #f8fafc;
+  --color-muted-foreground: #64748b;
+
+  /* Accent - Survol (version légère du primary bleu) */
+  --color-accent: #dbeafe;
+  --color-accent-foreground: #1e40af;
+
+  /* Destructive - Rouge */
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+
+  /* Borders & Inputs */
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+
+  /* Border Radius */
+  --radius: 0.5rem;
+
+  /* Fonts - Geist pour texte, Rethink Sans pour titres */
+  --font-family-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-family-heading: var(--font-rethink-sans), system-ui, sans-serif;
+  --font-family-mono: "Courier New", monospace;
+
+  /* Base font size - 16px */
+  --font-size-base: 16px;
+}
+
+/* Override theme variables for dark mode */
+@layer theme {
+  .dark {
+  /* Primary brand color - #4255FF (légèrement plus clair pour dark mode) */
+  --color-primary: #6b7cff;
+  --color-primary-foreground: #ffffff;
+  --color-ring: #6b7cff;
+
+    /* Background & Surface - Dark mode (gris très foncé, pas noir pur) */
+    --color-background: #0f172a;
+    --color-foreground: #f1f5f9;
+    --color-card: #1e293b;
+    --color-card-foreground: #f1f5f9;
+    --color-popover: #1e293b;
+    --color-popover-foreground: #f1f5f9;
+
+    /* Secondary - Gris moyen foncé */
+    --color-secondary: #334155;
+    --color-secondary-foreground: #f1f5f9;
+
+    /* Muted - Gris neutre foncé */
+    --color-muted: #1e293b;
+    --color-muted-foreground: #94a3b8;
+
+    /* Accent - Survol (version sombre du primary bleu) */
+    --color-accent: #1e3a8a;
+    --color-accent-foreground: #dbeafe;
+
+    /* Destructive - Rouge (légèrement plus clair pour dark mode) */
+    --color-destructive: #f87171;
+    --color-destructive-foreground: #ffffff;
+
+    /* Borders & Inputs */
+    --color-border: #334155;
+    --color-input: #334155;
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    font-size: 16px;
+    font-family: var(--font-geist-sans), system-ui, sans-serif;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: inherit;
+    font-size: 16px;
+  }
+
+  /* Geist pour les textes */
+  p, span, div, a, button, input, textarea, select, label, li, td, th, small, strong, em, code, pre {
+    font-family: var(--font-geist-sans), system-ui, sans-serif;
+  }
+
+  /* Rethink Sans pour les titres */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-rethink-sans), system-ui, sans-serif;
+  }
+}
