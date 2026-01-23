@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Rethink_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/shared/providers/theme-provider";
+import { QueryProvider } from "@/shared/providers/query-provider";
+import { AuthProvider } from "@/shared/providers/auth-provider";
+import { InitFetchMock } from "@/shared/api/mocks/init-fetch-mock";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,7 +50,12 @@ export default function RootLayout({
       <body
         className={`${rethinkSans.variable} antialiased`}
       >
-        <ThemeProvider>{children}</ThemeProvider>
+        <InitFetchMock />
+        <QueryProvider>
+          <AuthProvider>
+            <ThemeProvider>{children}</ThemeProvider>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

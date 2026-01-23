@@ -6,6 +6,7 @@
 /* Define your light (default) theme variables */
 @theme {
   /* Primary brand color - #4255FF */
+  /* ou ça : #252b66 */
   --color-primary: #4255FF;
   --color-primary-foreground: #ffffff;
   --color-ring: #4255FF;
@@ -45,7 +46,7 @@
   --font-family-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-family-heading: var(--font-rethink-sans), system-ui, sans-serif;
   --font-family-mono: "Courier New", monospace;
-  
+
   /* Base font size - 16px */
   --font-size-base: 16px;
 }
@@ -92,24 +93,24 @@
   * {
     border-color: var(--color-border);
   }
-  
+
   html {
     font-size: 16px;
     font-family: var(--font-geist-sans), system-ui, sans-serif;
   }
-  
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: inherit;
     font-size: 16px;
   }
-  
+
   /* Geist pour les textes */
   p, span, div, a, button, input, textarea, select, label, li, td, th, small, strong, em, code, pre {
     font-family: var(--font-geist-sans), system-ui, sans-serif;
   }
-  
+
   /* Rethink Sans pour les titres */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-rethink-sans), system-ui, sans-serif;
