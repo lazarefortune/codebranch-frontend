@@ -29,7 +29,10 @@ export function ResetPasswordForm() {
   const mutation = useResetPassword();
 
   const onSubmit = async (data: ResetPasswordFormData) => {
-    mutation.mutate(data);
+    mutation.mutate({
+      token: data.token,
+      newPassword: data.newPassword,
+    });
   };
 
   const getErrorMessage = (error: unknown): string | undefined => {
