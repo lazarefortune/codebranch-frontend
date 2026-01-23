@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { RegisterForm } from "@/features/auth/components/RegisterForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
 

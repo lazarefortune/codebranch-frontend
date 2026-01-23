@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { register } from "../services/auth.api";
 import type { RegisterRequest } from "@/contracts/auth.contract";
@@ -10,7 +10,6 @@ import type { RegisterRequest } from "@/contracts/auth.contract";
  */
 export function useRegister() {
   const router = useRouter();
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: RegisterRequest) => register(data),

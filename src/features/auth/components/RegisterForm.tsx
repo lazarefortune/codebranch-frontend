@@ -82,7 +82,7 @@ export function RegisterForm() {
       )}
 
       <Button type="submit" className="w-full" loading={mutation.isPending}>
-        S'inscrire
+        S&apos;inscrire
       </Button>
 
       <p className="text-center text-sm text-muted-foreground">

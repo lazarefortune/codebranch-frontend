@@ -29,7 +29,7 @@ export function ForgotPasswordForm() {
       <div className="space-y-4">
         <div className="text-center space-y-2">
           <p className="text-base">
-            Un email de réinitialisation a été envoyé à l'adresse fournie.
+            Un email de réinitialisation a été envoyé à l&apos;adresse fournie.
           </p>
           <p className="text-sm text-muted-foreground">
             Vérifiez votre boîte de réception et suivez les instructions pour réinitialiser votre mot de passe.

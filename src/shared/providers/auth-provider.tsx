@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useState, useEffect } from "react";
+import { createContext, useContext, ReactNode, useState, useEffect, startTransition } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "@/features/auth/services/auth.api";
 import { isAuthenticated } from "@/shared/hooks/useAuthState";
@@ -30,8 +30,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Vérifier le token uniquement côté client après le montage
   useEffect(() => {
-    setHasToken(isAuthenticated());
-    setIsInitialized(true);
+    startTransition(() => {
+      setHasToken(isAuthenticated());
+      setIsInitialized(true);
+    });
   }, []);
 
   const { data, isLoading } = useQuery({

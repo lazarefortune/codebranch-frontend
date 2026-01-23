@@ -10,7 +10,7 @@ function VerifyEmailContent() {
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Vérification de l'email</CardTitle>
+          <CardTitle>Vérification de l&apos;email</CardTitle>
           <CardDescription>
             Entrez le code de vérification reçu par email
           </CardDescription>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, startTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/shared/ui/button";
@@ -15,7 +15,9 @@ export default function Home() {
 
   // Éviter les problèmes d'hydratation en s'assurant que le composant est monté côté client
   useEffect(() => {
-    setIsMounted(true);
+    startTransition(() => {
+      setIsMounted(true);
+    });
   }, []);
 
   useEffect(() => {
@@ -60,7 +62,7 @@ export default function Home() {
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
               <Link href="/inscription">
                 <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                  S'inscrire
+                  S&apos;inscrire
                 </Button>
               </Link>
               <Link href="/connexion">

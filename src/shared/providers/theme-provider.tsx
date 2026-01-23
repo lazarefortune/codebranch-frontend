@@ -26,17 +26,6 @@ export function ThemeProvider({
   const [theme, setTheme] = React.useState<Theme>(defaultTheme);
   const [mounted, setMounted] = React.useState(false);
 
-  React.useEffect(() => {
-    setMounted(true);
-    // Check for saved theme preference or default to light
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
-    setTheme(initialTheme);
-    applyTheme(initialTheme);
-  }, []);
-
   const applyTheme = React.useCallback((newTheme: Theme) => {
     const root = document.documentElement;
     if (newTheme === "dark") {
@@ -46,6 +35,17 @@ export function ThemeProvider({
     }
     localStorage.setItem("theme", newTheme);
   }, []);
+
+  React.useEffect(() => {
+    setMounted(() => true);
+    // Check for saved theme preference or default to light
+    const savedTheme = localStorage.getItem("theme") as Theme | null;
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
+    setTheme(initialTheme);
+    applyTheme(initialTheme);
+  }, [applyTheme]);
 
   const handleSetTheme = React.useCallback(
     (newTheme: Theme) => {
