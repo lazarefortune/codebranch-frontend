@@ -1,4 +1,5 @@
-import type { ApiError } from "@/contracts/auth.contract";
+import type { ApiError, RefreshResponse } from "@/contracts/auth.contract";
+import { setAccessToken, clearAccessToken } from "@/shared/hooks/useAuthState";
 
 const getApiBaseUrl = (): string => {
   if (process.env.NEXT_PUBLIC_API_URL) {
@@ -38,9 +39,12 @@ export class ApiClientError extends Error {
 
 /**
  * Client HTTP centralisé pour toutes les requêtes API
+ * Gère automatiquement les cookies (refresh token) et le refresh du token d'accès
  */
 class ApiClient {
   private baseURL: string;
+  private isRefreshing = false;
+  private refreshPromise: Promise<string> | null = null;
 
   constructor(baseURL: string) {
     this.baseURL = baseURL;
@@ -70,6 +74,48 @@ class ApiClient {
     }
 
     return headers;
+  }
+
+  /**
+   * Rafraîchit le token d'accès en utilisant le refresh token (cookie)
+   */
+  private async refreshAccessToken(): Promise<string> {
+    // Si un refresh est déjà en cours, attendre qu'il se termine
+    if (this.isRefreshing && this.refreshPromise) {
+      return this.refreshPromise;
+    }
+
+    this.isRefreshing = true;
+    this.refreshPromise = (async () => {
+      try {
+        const response = await fetch(`${this.baseURL}/auth/refresh`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // Important : envoie les cookies (cb_refresh)
+        });
+
+        if (!response.ok) {
+          // Le refresh token est invalide ou expiré
+          clearAccessToken();
+          throw new ApiClientError(
+            "INVALID_REFRESH_TOKEN",
+            "La session a expiré. Veuillez vous reconnecter.",
+            response.status,
+          );
+        }
+
+        const data: RefreshResponse = await response.json();
+        setAccessToken(data.accessToken);
+        return data.accessToken;
+      } finally {
+        this.isRefreshing = false;
+        this.refreshPromise = null;
+      }
+    })();
+
+    return this.refreshPromise;
   }
 
   /**
@@ -106,13 +152,55 @@ class ApiClient {
   }
 
   /**
-   * Effectue une requête GET
+   * Effectue une requête avec gestion automatique du refresh token
    */
-  async get<T>(endpoint: string, includeAuth = true): Promise<T> {
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
-      method: "GET",
-      headers: this.getHeaders(includeAuth),
-    });
+  private async request<T>(
+    endpoint: string,
+    options: RequestInit,
+    includeAuth = true,
+    retryOn401 = true,
+  ): Promise<T> {
+    const fetchOptions: RequestInit = {
+      ...options,
+      credentials: "include", // Important : envoie les cookies (cb_refresh)
+      headers: {
+        ...this.getHeaders(includeAuth),
+        ...options.headers,
+      },
+    };
+
+    let response = await fetch(`${this.baseURL}${endpoint}`, fetchOptions);
+
+    // Si on reçoit une 401 et qu'on a un token, essayer de le refresh
+    if (
+      response.status === 401 &&
+      includeAuth &&
+      retryOn401 &&
+      this.getAccessToken()
+    ) {
+      try {
+        // Rafraîchir le token
+        await this.refreshAccessToken();
+
+        // Réessayer la requête avec le nouveau token
+        const retryOptions: RequestInit = {
+          ...options,
+          credentials: "include",
+          headers: {
+            ...this.getHeaders(includeAuth),
+            ...options.headers,
+          },
+        };
+
+        response = await fetch(`${this.baseURL}${endpoint}`, retryOptions);
+      } catch (refreshError) {
+        // Le refresh a échoué, propager l'erreur
+        if (refreshError instanceof ApiClientError) {
+          throw refreshError;
+        }
+        // Sinon, continuer avec l'erreur 401 originale
+      }
+    }
 
     if (!response.ok) {
       await this.handleError(response);
@@ -123,6 +211,13 @@ class ApiClient {
     }
 
     return response.json();
+  }
+
+  /**
+   * Effectue une requête GET
+   */
+  async get<T>(endpoint: string, includeAuth = true): Promise<T> {
+    return this.request<T>(endpoint, { method: "GET" }, includeAuth);
   }
 
   /**
@@ -133,22 +228,14 @@ class ApiClient {
     data?: unknown,
     includeAuth = true,
   ): Promise<T> {
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
-      method: "POST",
-      headers: this.getHeaders(includeAuth),
-      body: data ? JSON.stringify(data) : undefined,
-    });
-
-    if (!response.ok) {
-      await this.handleError(response);
-    }
-
-    // Gère les réponses 204 No Content
-    if (response.status === 204) {
-      return undefined as T;
-    }
-
-    return response.json();
+    return this.request<T>(
+      endpoint,
+      {
+        method: "POST",
+        body: data ? JSON.stringify(data) : undefined,
+      },
+      includeAuth,
+    );
   }
 
   /**
@@ -159,21 +246,14 @@ class ApiClient {
     data?: unknown,
     includeAuth = true,
   ): Promise<T> {
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
-      method: "PUT",
-      headers: this.getHeaders(includeAuth),
-      body: data ? JSON.stringify(data) : undefined,
-    });
-
-    if (!response.ok) {
-      await this.handleError(response);
-    }
-
-    if (response.status === 204) {
-      return undefined as T;
-    }
-
-    return response.json();
+    return this.request<T>(
+      endpoint,
+      {
+        method: "PUT",
+        body: data ? JSON.stringify(data) : undefined,
+      },
+      includeAuth,
+    );
   }
 
   /**
@@ -184,21 +264,14 @@ class ApiClient {
     data?: unknown,
     includeAuth = true,
   ): Promise<T> {
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
-      method: "DELETE",
-      headers: this.getHeaders(includeAuth),
-      body: data ? JSON.stringify(data) : undefined,
-    });
-
-    if (!response.ok) {
-      await this.handleError(response);
-    }
-
-    if (response.status === 204) {
-      return undefined as T;
-    }
-
-    return response.json();
+    return this.request<T>(
+      endpoint,
+      {
+        method: "DELETE",
+        body: data ? JSON.stringify(data) : undefined,
+      },
+      includeAuth,
+    );
   }
 }
 
