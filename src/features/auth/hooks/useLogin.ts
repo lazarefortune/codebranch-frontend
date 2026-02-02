@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { login } from "../services/auth.api";
 import { setAccessToken } from "@/shared/hooks/useAuthState";
+import { useAuth } from "./useAuth";
 import type { LoginRequest } from "@/contracts/auth.contract";
 
 /**
@@ -12,6 +13,7 @@ import type { LoginRequest } from "@/contracts/auth.contract";
 export function useLogin() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { refreshAuth } = useAuth();
 
   return useMutation({
     mutationFn: (data: LoginRequest) => login(data),
@@ -19,7 +21,10 @@ export function useLogin() {
       // Stocker le token dans localStorage
       setAccessToken(response.accessToken);
 
-      // Invalider et refetch la query "me" pour mettre à jour l'état auth
+      // Mettre à jour l'état auth du provider (hasToken) pour éviter la redirection vers /connexion
+      refreshAuth();
+
+      // Invalider et refetch la query "me" pour charger l'utilisateur
       queryClient.invalidateQueries({ queryKey: ["me"] });
 
       // Rediriger vers le dashboard

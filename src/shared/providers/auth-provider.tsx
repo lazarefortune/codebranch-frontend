@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useState, useEffect, startTransition } from "react";
+import { createContext, useContext, ReactNode, useState, useEffect, startTransition, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "@/features/auth/services/auth.api";
 import { isAuthenticated } from "@/shared/hooks/useAuthState";
@@ -10,12 +10,15 @@ interface AuthContextValue {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  /** À appeler après avoir stocké un nouveau token (ex. après login) pour mettre à jour l'état auth */
+  refreshAuth: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue>({
   user: null,
   isAuthenticated: false,
   isLoading: true,
+  refreshAuth: () => {},
 });
 
 /**
@@ -44,10 +47,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
+  const refreshAuth = useCallback(() => {
+    setHasToken(isAuthenticated());
+  }, []);
+
   const value: AuthContextValue = {
     user: data?.user || null,
     isAuthenticated: hasToken && !!data?.user,
     isLoading: !isInitialized || (hasToken ? isLoading : false),
+    refreshAuth,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
