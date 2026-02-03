@@ -532,47 +532,47 @@ export default function DesignSystemPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
                   <div className="w-20 text-sm text-muted-foreground">0.5 (2px)</div>
-                  <div className="h-4 bg-primary rounded" style={{ width: "2px" }}></div>
+                  <div className="h-4 w-0.5 bg-primary rounded" />
                   <code className="text-xs">p-0.5 / gap-0.5</code>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-20 text-sm text-muted-foreground">1 (4px)</div>
-                  <div className="h-4 bg-primary rounded" style={{ width: "4px" }}></div>
+                  <div className="h-4 w-1 bg-primary rounded" />
                   <code className="text-xs">p-1 / gap-1</code>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-20 text-sm text-muted-foreground">2 (8px)</div>
-                  <div className="h-4 bg-primary rounded" style={{ width: "8px" }}></div>
+                  <div className="h-4 w-2 bg-primary rounded" />
                   <code className="text-xs">p-2 / gap-2</code>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-20 text-sm text-muted-foreground">3 (12px)</div>
-                  <div className="h-4 bg-primary rounded" style={{ width: "12px" }}></div>
+                  <div className="h-4 w-3 bg-primary rounded" />
                   <code className="text-xs">p-3 / gap-3</code>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-20 text-sm text-muted-foreground">4 (16px)</div>
-                  <div className="h-4 bg-primary rounded" style={{ width: "16px" }}></div>
+                  <div className="h-4 w-4 bg-primary rounded" />
                   <code className="text-xs">p-4 / gap-4</code>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-20 text-sm text-muted-foreground">6 (24px)</div>
-                  <div className="h-4 bg-primary rounded" style={{ width: "24px" }}></div>
+                  <div className="h-4 w-6 bg-primary rounded" />
                   <code className="text-xs">p-6 / gap-6</code>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-20 text-sm text-muted-foreground">8 (32px)</div>
-                  <div className="h-4 bg-primary rounded" style={{ width: "32px" }}></div>
+                  <div className="h-4 w-8 bg-primary rounded" />
                   <code className="text-xs">p-8 / gap-8</code>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-20 text-sm text-muted-foreground">12 (48px)</div>
-                  <div className="h-4 bg-primary rounded" style={{ width: "48px" }}></div>
+                  <div className="h-4 w-12 bg-primary rounded" />
                   <code className="text-xs">p-12 / gap-12</code>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-20 text-sm text-muted-foreground">16 (64px)</div>
-                  <div className="h-4 bg-primary rounded" style={{ width: "64px" }}></div>
+                  <div className="h-4 w-16 bg-primary rounded" />
                   <code className="text-xs">p-16 / gap-16</code>
                 </div>
               </div>

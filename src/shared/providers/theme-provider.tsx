@@ -33,15 +33,22 @@ export function ThemeProvider({
     } else {
       root.classList.remove("dark");
     }
-    localStorage.setItem("theme", newTheme);
+    try {
+      localStorage.setItem("theme", newTheme);
+    } catch {
+      // Safari private mode, quota exceeded, or localStorage disabled
+    }
   }, []);
 
   React.useEffect(() => {
     setMounted(() => true);
-    // Check for saved theme preference or default to light
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
+    let savedTheme: Theme | null = null;
+    try {
+      savedTheme = localStorage.getItem("theme") as Theme | null;
+    } catch {
+      // Safari private mode or localStorage disabled
+    }
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
     const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
     setTheme(initialTheme);
     applyTheme(initialTheme);
@@ -56,12 +63,9 @@ export function ThemeProvider({
   );
 
   const toggleTheme = React.useCallback(() => {
-    // Read current theme from DOM to ensure we have the latest state
-    const root = document.documentElement;
-    const isDark = root.classList.contains("dark");
-    const newTheme = isDark ? "light" : "dark";
+    const newTheme = theme === "dark" ? "light" : "dark";
     handleSetTheme(newTheme);
-  }, [handleSetTheme]);
+  }, [theme, handleSetTheme]);
 
   // Always provide context, even before mount
   // This prevents errors during SSR
