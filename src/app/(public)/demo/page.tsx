@@ -13,8 +13,8 @@ import {
     Star,
     Twitter
 } from "lucide-react";
-import demoAvatar from "@/assets/demo-avatar.jpg";
 import Image from "next/image";
+import demoAvatar from "@/assets/demo-avatar.jpg";
 import {motion} from "framer-motion";
 
 const repos = [
@@ -77,7 +77,7 @@ export default function DemoPage() {
                                 className="mb-8 text-center"
                 >
                     <motion.div variants={fadeUp} custom={0} className="mb-4">
-                        <Image src={demoAvatar} alt="Demo Avatar"
+                        <Image src={demoAvatar} alt="Demo Avatar" width={112} height={112}
                                className="mx-auto h-28 w-28 rounded-full border-2 border-primary object-cover glow-primary"/>
                     </motion.div>
                     <motion.h1 variants={fadeUp} custom={1} className="text-3xl font-bold">
