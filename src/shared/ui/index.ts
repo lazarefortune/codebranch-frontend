@@ -24,6 +24,7 @@ export {
   DialogTitle,
   DialogDescription,
 } from "./dialog";
+export { PublicHeader } from "./public-header";
 export {
   Select,
   SelectGroup,

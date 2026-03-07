@@ -1,118 +1,145 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Define how dark mode should be handled (toggle via class) */
-@custom-variant dark (&:where(.dark, .dark *));
+/* Variables thème light (défaut) */
+:root {
+    --color-primary: #199A48;
+    --color-primary-foreground: #ffffff;
+    --color-ring: #199A48;
 
-/* Define your light (default) theme variables */
-@theme {
-  /* Primary brand color - #4255FF */
-  /* ou ça : #252b66 */
-  --color-primary: #4255FF;
-  --color-primary-foreground: #ffffff;
-  --color-ring: #4255FF;
+    --color-background: #fafafa;
+    --color-foreground: #0f172a;
+    --color-card: #ffffff;
+    --color-card-foreground: #0f172a;
+    --color-popover: #ffffff;
+    --color-popover-foreground: #0f172a;
 
-  /* Background & Surface - Light mode */
-  --color-background: #fafafa;
-  --color-foreground: #0f172a;
-  --color-card: #ffffff;
-  --color-card-foreground: #0f172a;
-  --color-popover: #ffffff;
-  --color-popover-foreground: #0f172a;
+    --color-secondary: #f1f5f9;
+    --color-secondary-foreground: #1e293b;
 
-  /* Secondary - Gris clair */
-  --color-secondary: #f1f5f9;
-  --color-secondary-foreground: #1e293b;
+    --color-muted: #f8fafc;
+    --color-muted-foreground: #64748b;
 
-  /* Muted - Gris neutre */
-  --color-muted: #f8fafc;
-  --color-muted-foreground: #64748b;
+    --color-accent: #24DB67;
+    --color-accent-foreground: #000000;
 
-  /* Accent - Survol (version légère du primary bleu) */
-  --color-accent: #dbeafe;
-  --color-accent-foreground: #1e40af;
+    --color-destructive: #ef4444;
+    --color-destructive-foreground: #ffffff;
 
-  /* Destructive - Rouge */
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #ffffff;
+    --color-border: #e2e8f0;
+    --color-input: #e2e8f0;
 
-  /* Borders & Inputs */
-  --color-border: #e2e8f0;
-  --color-input: #e2e8f0;
+    --radius: 0.5rem;
 
-  /* Border Radius */
-  --radius: 0.5rem;
+    --font-family-mono: "JetBrains Mono", monospace;
 
-  /* Fonts - Geist pour texte, Rethink Sans pour titres */
-  --font-family-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-family-heading: var(--font-rethink-sans), system-ui, sans-serif;
-  --font-family-mono: "Courier New", monospace;
+    --border: 214 20% 88%;
 
-  /* Base font size - 16px */
-  --font-size-base: 16px;
+    --glow-primary: 142 72% 35%;
 }
 
-/* Override theme variables for dark mode */
-@layer theme {
-  .dark {
-  /* Primary brand color - #4255FF (légèrement plus clair pour dark mode) */
-  --color-primary: #6b7cff;
-  --color-primary-foreground: #ffffff;
-  --color-ring: #6b7cff;
+/* Variables thème dark */
+.dark {
+    --color-primary: #24DB67;
+    --color-primary-foreground: #000000;
+    --color-ring: #24DB67;
 
-    /* Background & Surface - Dark mode (gris très foncé, pas noir pur) */
-    --color-background: #0f172a;
+    --color-background: #0E1115;
     --color-foreground: #f1f5f9;
-    --color-card: #1e293b;
+    --color-card: #15181E;
     --color-card-foreground: #f1f5f9;
-    --color-popover: #1e293b;
+    --color-popover: #15181E;
     --color-popover-foreground: #f1f5f9;
 
-    /* Secondary - Gris moyen foncé */
     --color-secondary: #334155;
     --color-secondary-foreground: #f1f5f9;
 
-    /* Muted - Gris neutre foncé */
     --color-muted: #1e293b;
     --color-muted-foreground: #94a3b8;
 
-    /* Accent - Survol (version sombre du primary bleu) */
-    --color-accent: #1e3a8a;
-    --color-accent-foreground: #dbeafe;
+    --color-accent: #24DB67;
+    --color-accent-foreground: #000000;
 
-    /* Destructive - Rouge (légèrement plus clair pour dark mode) */
     --color-destructive: #f87171;
     --color-destructive-foreground: #ffffff;
 
-    /* Borders & Inputs */
     --color-border: #334155;
     --color-input: #334155;
-  }
+
+    --border: 220 14% 18%;
+
+    --glow-primary: 142 72% 50%;
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
+    * {
+        @apply border-border;
+    }
 
-  html {
-    font-size: 16px;
-    font-family: var(--font-geist-sans), system-ui, sans-serif;
-  }
+    html {
+        font-size: 16px;
+        font-family: var(--font-geist-sans), system-ui, sans-serif;
+    }
 
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    font-family: inherit;
-    font-size: 16px;
-  }
+    body {
+        @apply bg-background text-foreground;
+        font-size: 16px;
+    }
 
-  /* Geist pour les textes */
-  p, span, div, a, button, input, textarea, select, label, li, td, th, small, strong, em, code, pre {
-    font-family: var(--font-geist-sans), system-ui, sans-serif;
-  }
+    p,
+    span,
+    div,
+    a,
+    button,
+    input,
+    textarea,
+    select,
+    label,
+    li,
+    td,
+    th,
+    small,
+    strong,
+    em,
+    code,
+    pre {
+        font-family: var(--font-geist-sans), system-ui, sans-serif;
+    }
 
-  /* Rethink Sans pour les titres */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-rethink-sans), system-ui, sans-serif;
-  }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-rethink-sans), system-ui, sans-serif;
+    }
+
+    .container {
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        padding-right: 2rem;
+        padding-left: 2rem;
+    }
+
+    .bg-grid {
+        background-image: linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
+        linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
+        background-size: 60px 60px;
+    }
+
+    .bg-gradient-radial {
+        background: radial-gradient(
+                ellipse at center top,
+                color-mix(in srgb, var(--color-primary) 8%, transparent),
+                transparent 60%
+        );
+    }
+
+    .glow-primary {
+        box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.25),
+        0 0 60px hsl(var(--glow-primary) / 0.1);
+    }
 }

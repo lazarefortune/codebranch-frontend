@@ -45,13 +45,18 @@ export default function Home() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-8">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center p-8">
       <div className="mx-auto max-w-2xl space-y-8 text-center">
         <div className="space-y-4">
-          <h1 className="text-4xl font-bold tracking-tight">CodeBranch</h1>
+          <h1 className="text-4xl font-bold tracking-tight">Prêt à créer votre <b>CodeBranch ?</b></h1>
           <p className="text-lg text-muted-foreground">
             Plateforme de pages publiques professionnelles
           </p>
+            <Link href={'/demo'} className="mt-5">
+                <Button variant="primary" size="lg" className="w-full sm:w-auto">
+                    Commencer
+                </Button>
+            </Link>
         </div>
 
         <Card>
@@ -72,7 +77,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="pt-4">
-              <Link href="/systeme-design" className="text-sm text-muted-foreground hover:text-foreground">
+              <Link href="/design-system" className="text-sm text-muted-foreground hover:text-foreground">
                 Voir le système de design
               </Link>
             </div>
