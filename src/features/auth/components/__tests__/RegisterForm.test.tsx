@@ -45,7 +45,6 @@ describe("RegisterForm", () => {
 
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
     expect(screen.getByLabelText("Mot de passe")).toBeInTheDocument();
-    expect(screen.getByLabelText("Confirmer le mot de passe")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /s'inscrire/i })).toBeInTheDocument();
   });
 
@@ -77,7 +76,6 @@ describe("RegisterForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "test@example.com");
     await user.type(screen.getByLabelText("Mot de passe"), "StrongPass123!");
-    await user.type(screen.getByLabelText("Confirmer le mot de passe"), "StrongPass123!");
 
     const submitButton = screen.getByRole("button", { name: /s'inscrire/i });
     await user.click(submitButton);

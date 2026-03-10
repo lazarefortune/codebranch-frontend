@@ -7,7 +7,7 @@ import {Loader} from "@/shared/ui/loader";
 import {Check, Loader2, Terminal, X, Zap} from "lucide-react";
 import {AnimatePresence, motion} from "framer-motion";
 
-const TAKEN_NAMES = ["alex", "demo", "admin", "codebranch"];
+const TAKEN_NAMES = ["demo", "admin", "codebranch"];
 
 export default function Home() {
     const {isAuthenticated, isLoading} = useAuth();

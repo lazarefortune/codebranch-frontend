@@ -1,5 +1,6 @@
 export { Button, buttonVariants, type ButtonProps } from "./button";
 export { Input, type InputProps } from "./input";
+export { PasswordInput, type PasswordInputProps } from "./password-input";
 export { Label, type LabelProps } from "./label";
 export { ErrorMessage, type ErrorMessageProps } from "./error-message";
 export {

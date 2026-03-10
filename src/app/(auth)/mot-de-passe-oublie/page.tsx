@@ -1,20 +1,21 @@
 import { ForgotPasswordForm } from "@/features/auth/components/ForgotPasswordForm";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
+import Image from "next/image";
 
 export default function ForgotPasswordPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Mot de passe oublié</CardTitle>
-          <CardDescription>
-            Entrez votre email pour recevoir un lien de réinitialisation
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ForgotPasswordForm />
-        </CardContent>
-      </Card>
+    <div className="min-h-screen grid md:grid-cols-2">
+      <div className="flex items-center justify-center">
+          <ForgotPasswordForm/>
+      </div>
+      <div className="bg-red-500/10 hidden md:block relative h-screen">
+        <Image src="/auth-illustration.jpg" alt="Illustration de réinitialisation" fill className="object-cover" />
+        <div className="absolute z-10 inset-0 bg-gradient-to-t from-green-500/30 to-transparent"/>
+       <div className="absolute z-10 bottom-8 left-8 text-sm text-muted-foreground">
+          <p className="text-white text-lg font-semibold">
+            CodeBranch
+          </p>
+       </div>
+      </div>
     </div>
   );
 }

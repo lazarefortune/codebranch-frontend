@@ -110,34 +110,14 @@ describe("registerSchema", () => {
     const data = {
       email: "user@example.com",
       password: "StrongPass123!",
-      confirmPassword: "StrongPass123!",
     };
     expect(registerSchema.safeParse(data).success).toBe(true);
-  });
-
-  it("devrait rejeter si les mots de passe ne correspondent pas", () => {
-    const data = {
-      email: "user@example.com",
-      password: "StrongPass123!",
-      confirmPassword: "DifferentPass123!",
-    };
-    const result = registerSchema.safeParse(data);
-    expect(result.success).toBe(false);
-    if (!result.success) {
-      const confirmPasswordError = result.error.issues.find(
-        (e) => e.path[0] === "confirmPassword"
-      );
-      expect(confirmPasswordError?.message).toBe(
-        "Les mots de passe ne correspondent pas"
-      );
-    }
   });
 
   it("devrait rejeter un email invalide", () => {
     const data = {
       email: "invalid-email",
       password: "StrongPass123!",
-      confirmPassword: "StrongPass123!",
     };
     expect(registerSchema.safeParse(data).success).toBe(false);
   });
@@ -146,7 +126,6 @@ describe("registerSchema", () => {
     const data = {
       email: "user@example.com",
       password: "weak",
-      confirmPassword: "weak",
     };
     expect(registerSchema.safeParse(data).success).toBe(false);
   });
