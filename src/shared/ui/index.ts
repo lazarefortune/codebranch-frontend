@@ -38,3 +38,4 @@ export {
   SelectScrollUpButton,
   SelectScrollDownButton,
 } from "./select";
+export { Checkbox, type CheckboxProps } from "./checkbox";
